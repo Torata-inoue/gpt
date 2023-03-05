@@ -1,11 +1,13 @@
 {
+    "type": "module",
     "private": true,
     "scripts": {
         "dev": "vite",
         "build": "vite build",
         "start": "node public/js/index.js",
         "build-ts": "tsc",
-        "dev-ts": "ts-node resources/ts/index.ts"
+        "dev-ts": "ts-node resources/ts/index.ts",
+        "llm": "yarn build-ts && yarn start"
     },
     "devDependencies": {
         "@types/node": "^18.14.2",
@@ -17,7 +19,7 @@
     },
     "dependencies": {
         "dotenv": "^16.0.3",
-        "langchain": "^0.0.16",
+        "langchain": "^0.0.21",
         "openai": "^3.1.0"
     }
 }
