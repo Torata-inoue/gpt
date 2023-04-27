@@ -19,15 +19,17 @@ class TestService
     public function createPost()
     {
         $category = new Category(['name' => 'alphones']);
+        DB::enableQueryLog();
         DB::transaction(function () use ($category) {
             $this->categoryRepository->save($category);
             $post = new Post([
                 'category_id' => $category->id,
-                'title' => 'today is...',
-                'content' => 'hoooooooo!!!'
+                'title' => 'tomorrow is...',
+                'content' => 'foooooooo!!!'
             ]);
             $this->postRepository->save($post);
         });
+        app('log')->info(DB::getQueryLog());
     }
 
     public function updatePost()

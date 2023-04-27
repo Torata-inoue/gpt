@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
@@ -25,7 +26,23 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        parent::boot();
+
+        Event::listen('Illuminate\Database\Events\TransactionBeginning', function () {
+            $this->app->make('log')->debug('beginTransaction');
+        });
+
+        DB::listen(function ($query) {
+            $this->app->make('log')->debug($query->sql);
+        });
+
+        Event::listen('Illuminate\Database\Events\TransactionCommitted', function () {
+            $this->app->make('log')->debug('commit');
+        });
+
+        Event::listen('Illuminate\Database\Events\TransactionRolledBack', function () {
+            $this->app->make('log')->debug('rollBack');
+        });
     }
 
     /**
